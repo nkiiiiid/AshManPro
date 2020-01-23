@@ -14,7 +14,7 @@ public class ChunkEventListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        event.getChunk().getEntities().values().parallelStream()
+        event.getChunk().getEntities().values().stream()
                 .filter(e -> e instanceof EntityCreature)
                 .forEach(Entity::close);
     }

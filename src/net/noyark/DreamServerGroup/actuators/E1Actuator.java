@@ -52,7 +52,7 @@ public class E1Actuator implements Actuator {
     public void perform() {
         final int[] ic = {0};
         final int[] ec = {0};
-        Server.getInstance().getLevels().values().parallelStream()
+        Server.getInstance().getLevels().values().stream()
                 .filter(((Predicate<Level>) l -> l.getPlayers().size() > threshold)
                         .and(l -> !levelExcept.contains(l.getFolderName()))
                 )

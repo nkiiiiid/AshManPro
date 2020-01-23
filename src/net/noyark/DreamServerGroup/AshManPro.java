@@ -82,7 +82,7 @@ public class AshManPro extends PluginBase {
 
     public static void forceEliminate() {
         Server.getInstance().getLevels().values()
-                .parallelStream()
+                .stream()
                 .map(Level::getEntities)
                 .flatMap(Arrays::stream)
                 .filter(e -> e instanceof EntityCreature || e instanceof EntityItem)
