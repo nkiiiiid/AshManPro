@@ -50,15 +50,17 @@ public class E0Actuator implements Actuator {
         final int[] ic = {0};
         final int[] ec = {0};
         stream.forEach(e -> {
-            if (e instanceof EntityCreature && !(e instanceof Player) && AshManPro.eliminate_entity) {
-                if (AshManPro.eliminate_entity_force || !AshManPro.exemptedEntities.containsKey(e.getId())) {
-                    e.close();
-                    ec[0]++;
-                }
-            } else if (e instanceof EntityItem && AshManPro.eliminate_items) {
-                if (!((EntityItem) e).getItem().hasCompoundTag() || !AshManPro.eliminate_items_except_nbtcontains) {
-                    e.close();
-                    ic[0]++;
+            if (!levelExcept.contains(e.getLevel().getFolderName())) {
+                if (e instanceof EntityCreature && !(e instanceof Player) && AshManPro.eliminate_entity) {
+                    if (AshManPro.eliminate_entity_force || !AshManPro.exemptedEntities.containsKey(e.getId())) {
+                        e.close();
+                        ec[0]++;
+                    }
+                } else if (e instanceof EntityItem && AshManPro.eliminate_items) {
+                    if (!((EntityItem) e).getItem().hasCompoundTag() || !AshManPro.eliminate_items_except_nbtcontains) {
+                        e.close();
+                        ic[0]++;
+                    }
                 }
             }
         });
