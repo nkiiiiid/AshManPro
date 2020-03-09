@@ -16,6 +16,8 @@ import net.noyark.DreamServerGroup.actuators.E1Actuator;
 import net.noyark.DreamServerGroup.actuators.E2Actuator;
 import net.noyark.DreamServerGroup.command.EliminateCommand;
 import net.noyark.DreamServerGroup.exception.EntityNotFindException;
+import net.noyark.DreamServerGroup.placeholder.AshManProPlaceHolder;
+import net.noyark.DreamServerGroup.placeholder.PlaceHolder;
 import net.noyark.DreamServerGroup.triggers.T0Trigger;
 import net.noyark.DreamServerGroup.triggers.T1Trigger;
 import net.noyark.DreamServerGroup.triggers.T2Trigger;
@@ -37,6 +39,40 @@ public class AshManPro extends PluginBase {
     private static Config config;
     private static Actuator actuator;
     private static Task task;
+    private static PlaceHolder placeholder;
+
+    public static Map<Long, Entity> getExemptedEntities() {
+        return exemptedEntities;
+    }
+
+    public static Map<Integer, String> getBeforehandMessage() {
+        return beforehand_message;
+    }
+
+    public static boolean isEliminateEntity() {
+        return eliminate_entity;
+    }
+
+    public static boolean isEliminateItems() {
+        return eliminate_items;
+    }
+
+    public static boolean isEliminateItemsExcept_nbtcontains() {
+        return eliminate_items_except_nbtcontains;
+    }
+
+    public static boolean isEliminateEntityForce() {
+        return eliminate_entity_force;
+    }
+
+    public static String getTerminateMessage() {
+        return terminate_message;
+    }
+
+    public static PlaceHolder getPlaceholder() {
+        return placeholder;
+    }
+
 
     public static AshManPro getInstance() {
         return obj;
@@ -44,13 +80,6 @@ public class AshManPro extends PluginBase {
 
     public static Actuator getActuator() {
         return actuator;
-    }
-
-    public static void broadcastCleanMessage(String s, Object... args) {
-        for (int i = 0; i < args.length; i++) {
-            s = s.replaceAll("\\{" + i + "}", String.valueOf(args[i]));
-        }
-        Server.getInstance().broadcastMessage(s, Server.getInstance().getOnlinePlayers().values());
     }
 
     public static void addExemptedEntity(Entity entity) {
@@ -62,7 +91,7 @@ public class AshManPro extends PluginBase {
         for (Level l : Server.getInstance().getLevels().values()) {
             if ((entity = l.getEntity(eid)) != null) {
                 addExemptedEntity(eid, entity);
-                break;
+                return;
             }
         }
         throw new EntityNotFindException("无法找到对应实体id所对应的实体");
@@ -158,5 +187,13 @@ public class AshManPro extends PluginBase {
             this.getLogger().notice("区块卸载时删除区块内所有实体功能已开启");
         }
         this.getServer().getCommandMap().register("AshManPro", new EliminateCommand());
+        placeholder = new AshManProPlaceHolder();
+        this.getLogger().info("adaddadad" + String.valueOf(AshManProPlaceHolder.isEnablePlaceholder()));
+    }
+
+    public static void broadcastMessage(String s, Object... os) {
+        Server.getInstance().getOnlinePlayers().values().forEach(p -> {
+            p.sendMessage(AshManPro.getPlaceholder().translate(s, p, os));
+        });
     }
 }

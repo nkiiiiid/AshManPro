@@ -7,6 +7,7 @@ import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.item.EntityItem;
 import net.noyark.DreamServerGroup.AshManPro;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -20,7 +21,7 @@ public class E0Actuator implements Actuator {
         this.levelExcept = levelExcept;
     }
 
-    public void perform(Stream<Entity> stream) {
+    public void perform(Collection<Entity> stream) {
         final int[] ic = {0};
         final int[] ec = {0};
         stream.forEach(e -> {
@@ -39,7 +40,7 @@ public class E0Actuator implements Actuator {
             }
         });
         String s = AshManPro.terminate_message;
-        Server.getInstance().broadcastMessage(s.replaceAll("\\{ic}", String.valueOf(ic[0])).replaceAll("\\{ec}", String.valueOf(ec[0])), Server.getInstance().getOnlinePlayers().values());
+        AshManPro.broadcastMessage(s, new Object[]{ic[0], ec[0]});
     }
 
     @Override
@@ -65,6 +66,6 @@ public class E0Actuator implements Actuator {
             }
         });
         String s = AshManPro.terminate_message;
-        Server.getInstance().broadcastMessage(s.replaceAll("\\{ic}", String.valueOf(ic[0])).replaceAll("\\{ec}", String.valueOf(ec[0])), Server.getInstance().getOnlinePlayers().values());
+        AshManPro.broadcastMessage(s, new Object[]{ic[0], ec[0]});
     }
 }

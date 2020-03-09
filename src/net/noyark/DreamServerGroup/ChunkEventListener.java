@@ -17,10 +17,12 @@ public class ChunkEventListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        event.getChunk().getEntities().values().stream()
-                .filter(((Predicate<Entity>)e->e instanceof EntityCreature && !(e instanceof Player) && AshManPro.eliminate_entity)
-                        .and(e->AshManPro.eliminate_entity_force || !AshManPro.exemptedEntities.containsKey(e.getId()))
-                )
-                .forEach(Entity::close);
+        if (!event.getChunk().getEntities().isEmpty()) {
+            event.getChunk().getEntities().values().stream()
+                    .filter(((Predicate<Entity>) e -> e instanceof EntityCreature && !(e instanceof Player) && AshManPro.eliminate_entity)
+                            .and(e -> AshManPro.eliminate_entity_force || !AshManPro.exemptedEntities.containsKey(e.getId()))
+                    )
+                    .forEach(Entity::close);
+        }
     }
 }

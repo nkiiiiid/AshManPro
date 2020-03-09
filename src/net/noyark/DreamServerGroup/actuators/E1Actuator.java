@@ -9,9 +9,9 @@ import cn.nukkit.level.Level;
 import net.noyark.DreamServerGroup.AshManPro;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 /**
  * @author zzz1999 @ AshManPro Project
@@ -26,7 +26,7 @@ public class E1Actuator implements Actuator {
     }
 
     @Override
-    public void perform(Stream<Entity> stream) {
+    public void perform(Collection<Entity> stream) {
         final int[] ic = {0};
         final int[] ec = {0};
         stream.forEach(e -> {
@@ -45,7 +45,7 @@ public class E1Actuator implements Actuator {
             }
         });
         String s = AshManPro.terminate_message;
-        Server.getInstance().broadcastMessage(s.replaceAll("\\{ic}", String.valueOf(ic[0])).replaceAll("\\{ec}", String.valueOf(ec[0])), Server.getInstance().getOnlinePlayers().values());
+        AshManPro.broadcastMessage(s, new Object[]{ic[0], ec[0]});
     }
 
     @Override
@@ -73,6 +73,6 @@ public class E1Actuator implements Actuator {
                         }
                 );
         String s = AshManPro.terminate_message;
-        Server.getInstance().broadcastMessage(s.replaceAll("\\{ic}", String.valueOf(ic[0])).replaceAll("\\{ec}", String.valueOf(ec[0])), Server.getInstance().getOnlinePlayers().values());
+        AshManPro.broadcastMessage(s, new Object[]{ic[0], ec[0]});
     }
 }

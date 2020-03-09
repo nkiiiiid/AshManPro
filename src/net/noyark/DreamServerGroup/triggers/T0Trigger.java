@@ -1,10 +1,11 @@
 package net.noyark.DreamServerGroup.triggers;
 
-import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.scheduler.PluginTask;
 import net.noyark.DreamServerGroup.AshManPro;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -22,12 +23,13 @@ public class T0Trigger extends PluginTask<AshManPro> implements BaseTrigger {
     @Override
     public void onRun(int i) {
         if (AshManPro.eliminate_entity || AshManPro.eliminate_items) {
-            Stream.Builder<Entity> build = Stream.builder();
-            owner.getServer().getLevels().values().forEach(l -> Stream.of(l.getEntities()).forEach(build::add));
-            Stream<Entity> stream;
-            if ((stream = build.build()).count() > threshold) {
+            List<Entity> entityList = new ArrayList<>();
+            owner.getServer().getLevels().values().forEach(l -> {
+                Stream.of(l.getEntities()).forEach(entityList::add);
+            });
+            if (entityList.size() > threshold) {
                 if (AshManPro.beforehand_message.isEmpty()) {
-                    AshManPro.getActuator().perform(stream);
+                    AshManPro.getActuator().perform(entityList);
                     return;
                 }
                 owner.getServer().getScheduler().scheduleRepeatingTask(new PluginTask<AshManPro>(AshManPro.getInstance()) {
@@ -42,7 +44,7 @@ public class T0Trigger extends PluginTask<AshManPro> implements BaseTrigger {
                         }
                         String s;
                         if ((s = bm.get(cel--)) != null) {
-                            Server.getInstance().broadcastMessage(s, Server.getInstance().getOnlinePlayers().values());
+                            AshManPro.broadcastMessage(s);
                         }
                     }
                 }, 20);

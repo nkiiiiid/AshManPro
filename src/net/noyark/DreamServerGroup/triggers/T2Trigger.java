@@ -5,6 +5,8 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.scheduler.PluginTask;
 import net.noyark.DreamServerGroup.AshManPro;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -24,12 +26,13 @@ public class T2Trigger extends PluginTask<AshManPro> implements BaseTrigger {
     @Override
     public void onRun(int i) {
         if (AshManPro.eliminate_entity || AshManPro.eliminate_items) {
-            Stream.Builder<Entity> build = Stream.builder();
-            owner.getServer().getLevels().values().forEach(l -> Stream.of(l.getEntities()).forEach(build::add));
-            Stream<Entity> stream;
-            if ((stream = build.build()).count() > entityThreshold && Server.getInstance().getTicksPerSecondAverage() < AvgTPSThreshold) {
+            List<Entity> entityList = new ArrayList<>();
+            owner.getServer().getLevels().values().forEach(l -> {
+                Stream.of(l.getEntities()).forEach(entityList::add);
+            });
+            if (entityList.size() > entityThreshold && Server.getInstance().getTicksPerSecondAverage() < AvgTPSThreshold) {
                 if (AshManPro.beforehand_message.isEmpty()) {
-                    AshManPro.getActuator().perform(stream);
+                    AshManPro.getActuator().perform(entityList);
                     return;
                 }
                 Map<Integer, String> bm = AshManPro.beforehand_message;
@@ -40,12 +43,12 @@ public class T2Trigger extends PluginTask<AshManPro> implements BaseTrigger {
                     @Override
                     public void onRun(int i) {
                         if (cel < 0) {
-                            AshManPro.getActuator().perform(stream);
+                            AshManPro.getActuator().perform(entityList);
                             cancel();
                         }
                         String s;
                         if ((s = bm.get(cel)) != null) {
-                            Server.getInstance().broadcastMessage(s, Server.getInstance().getOnlinePlayers().values());
+                            AshManPro.broadcastMessage(s);
                         }
                         cel--;
 

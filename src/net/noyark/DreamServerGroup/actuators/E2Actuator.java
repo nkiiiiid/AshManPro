@@ -30,7 +30,7 @@ public class E2Actuator implements Actuator {
     }
 
     @Override
-    public void perform(Stream<Entity> stream) {
+    public void perform(Collection<Entity> stream) {
         perform();
     }
 
@@ -45,7 +45,7 @@ public class E2Actuator implements Actuator {
                 .flatMap(Collection::stream)
                 .filter(p -> !playerExcept.contains(p.getName()))
                 .forEach(p -> {
-                    if(!playerExcept.contains(p.getName())) {
+                    if (!playerExcept.contains(p.getName())) {
                         AxisAlignedBB aabb = new SimpleAxisAlignedBB(
                                 p.getX() - offsetX,
                                 p.getY(),
@@ -76,6 +76,6 @@ public class E2Actuator implements Actuator {
                     }
                 });
         String s = AshManPro.terminate_message;
-        Server.getInstance().broadcastMessage(s.replaceAll("\\{ic}", String.valueOf(ic[0])).replaceAll("\\{ec}", String.valueOf(ec[0])), Server.getInstance().getOnlinePlayers().values());
+        AshManPro.broadcastMessage(s, new Object[]{ic[0], ec[0]});
     }
 }

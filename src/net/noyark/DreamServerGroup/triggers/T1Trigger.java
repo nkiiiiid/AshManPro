@@ -1,6 +1,5 @@
 package net.noyark.DreamServerGroup.triggers;
 
-import cn.nukkit.Server;
 import cn.nukkit.scheduler.PluginTask;
 import net.noyark.DreamServerGroup.AshManPro;
 
@@ -37,7 +36,7 @@ public class T1Trigger extends PluginTask<AshManPro> implements BaseTrigger {
                         }
                         String s;
                         if ((s = bm.get(cel--)) != null) {
-                            Server.getInstance().broadcastMessage(s,Server.getInstance().getOnlinePlayers().values());
+                            AshManPro.broadcastMessage(s);
                         }
                     }
                 }, 20);
