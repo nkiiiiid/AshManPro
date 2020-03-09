@@ -188,7 +188,6 @@ public class AshManPro extends PluginBase {
         }
         this.getServer().getCommandMap().register("AshManPro", new EliminateCommand());
         placeholder = new AshManProPlaceHolder();
-        this.getLogger().info("adaddadad" + String.valueOf(AshManProPlaceHolder.isEnablePlaceholder()));
     }
 
     public static void broadcastMessage(String s, Object... os) {
